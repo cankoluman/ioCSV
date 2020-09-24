@@ -6,22 +6,26 @@
 
 package ioCvs
 
-import java.io.{BufferedReader, BufferedWriter, FileInputStream, FileOutputStream}
-import java.util.zip.GZIPInputStream
-
+import java.io.{FileInputStream, FileOutputStream}
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Codec
+import scala.reflect.ClassTag
 
 /**
  * Created on 23/09/2020.
  *
  * @author Can Koluman
+ * @param separator Char, the cell (column) separator
+ * @param encoding Codec, character set encoding
+ * @param header Boolean, whether to read / write any column headers
+ * @tparam A The cell type of the repeated data. E.g. Double
  * @note
  *
  *
  */
-class VectorToCvs[A](override val separator: Char, override val encoding: Codec)
-  extends CvsBase[Vector[Vector[A]]] {
+class VectorToCvs[A](override val separator: Char, override implicit val encoding: Codec,
+                     override val header: Boolean)(implicit val c: ClassTag[A])
+  extends CvsBase[Vector[Vector[A]]](separator, encoding, header) {
 
   /**
    * Inputs source csv file to data structure A
@@ -30,15 +34,25 @@ class VectorToCvs[A](override val separator: Char, override val encoding: Codec)
    * @param gZip   , Boolean, whether to read  a compressed (gZip) file
    * @return A, populated data structure
    */
-  override def csvRead(source: String, gZip: Boolean): Vector[Vector[A]] = {
+  override def csvRead(source: String, gZip: Boolean): Frame[Vector[Vector[A]]] = {
     val hFile = new FileInputStream(source)
     val hInput = inputCharStream(hFile, gZip)
     val data = ArrayBuffer[Vector[A]]()
+    var headers: Option[Vector[String]] = None
 
-//    hInput.
+    var line = hInput.readLine()
+    if (header & !line.isEmpty) {
+      headers = Some(line.split(separator.toString).toVector)
+      line = hInput.readLine()
+    }
 
+    while(!line.isEmpty){
+      val row = line.split(separator.toString).map(_.asInstanceOf[A])
+      data += row.toVector
+      line = hInput.readLine()
+    }
 
-    data.toVector
+    Frame(headers, data.toVector)
   }
 
   /**
@@ -52,15 +66,28 @@ class VectorToCvs[A](override val separator: Char, override val encoding: Codec)
    *       - Outer vector: lines (rows)
    *       - Inner Vector: separator delimited elements (columns)
    */
-  override def csvWrite(source: Vector[Vector[A]], target: String, gZip: Boolean, append: Boolean = false): Unit = {
+  override def csvWrite(source: Frame[Vector[Vector[A]]], target: String, gZip: Boolean, append: Boolean = false): Unit = {
     makeDir(getPath(target))
     val hFile = new FileOutputStream(target, append)
     val hOutput = outputCharStream(hFile, gZip)
 
-    source.foreach(r => {
+    var start = 0
+    var size = 0
+    // cannot inject a header into a file being appended
+    if (header & !append) {
+      val hdr = source.header.get.mkString(separator.toString)
+      size = hdr.length
+      while (size > 0) {
+        hOutput.write(hdr, start, scala.math.min(CHUNK, size))
+        start += CHUNK
+        size -= CHUNK
+      }
+    }
+
+    source.data.foreach(r => {
       val line = r.mkString(separator.toString)
-      var start = 0
-      var size = line.length
+      start = 0
+      size = line.length
       while (size > 0) {
         hOutput.write(line, start, scala.math.min(CHUNK, size))
         start += CHUNK

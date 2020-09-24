@@ -6,31 +6,34 @@
 
 package ioCvs
 
-import java.io.{File, FileInputStream, InputStream, InputStreamReader, OutputStream, OutputStreamWriter, Reader, Writer}
-import java.nio.charset.{Charset, StandardCharsets}
+import java.io.{BufferedReader, File, InputStream, InputStreamReader, OutputStream, OutputStreamWriter, Writer}
+import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
 import java.util.zip.{GZIPInputStream, GZIPOutputStream}
-
 import scala.io.Codec
 
 /**
  * Created on 23/09/2020.
  *
  * @author Can Koluman
- * @note
+ * @param separator Char, the cell (column) separator
+ * @param encoding Codec, character set encoding
+ * @param header Boolean, whether to read / write any column headers
+ * @tparam A The full type of the repeated data. E.g. Vector[Vector[Double]]
+ * @note This class provides default constructors, and utility methods for file io handling
  *
  *
  */
 abstract class CvsBase[A](override val separator: Char, override implicit val encoding: Codec,
-                         override val ending: Char, override val header: Boolean) extends TIOCvs[A] {
+                          override val header: Boolean) extends TIOCvs[A] {
 
   /**
    * Constructor with defaults
    * @note The default separator is ';', the default encoding is UTF-8, the default
    *       line ending is '\n', and the header default is true
    */
-  def this(){
-    this(';', StandardCharsets.UTF_8, '\n', true)
+  def this() = {
+    this(';', StandardCharsets.UTF_8, true)
   }
 
   /*
@@ -41,12 +44,14 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
    *
    * @param hFile, InputStream, the stream to be read from file
    * @param gZip, Boolean, whether to output a compressed stream
-   * @return Reader, a read stream
+   * @return BufferedReader, a (buffered) read stream
+   * @note BufferedReader.readline() will break at \n, \r or its combination.
+   *       This should pick up all standard line endings
    */
-  protected def inputCharStream(hFile: InputStream, gZip: Boolean): Reader = {
+  protected def inputCharStream(hFile: InputStream, gZip: Boolean): BufferedReader = {
     if (gZip)
-      return new InputStreamReader(new GZIPInputStream(hFile), encoding.charSet)
-    new InputStreamReader(hFile, encoding.charSet)
+      return new BufferedReader(new InputStreamReader(new GZIPInputStream(hFile), encoding.charSet))
+    new BufferedReader(new InputStreamReader(hFile, encoding.charSet))
   }
 
   /**

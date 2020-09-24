@@ -6,16 +6,13 @@
 
 package ioCvs
 
-import java.io.{BufferedReader, BufferedWriter}
-import java.nio.charset.StandardCharsets
-
 import scala.io.Codec
 
 /**
  * Created on 23/09/2020.
  *
  * @author Can Koluman
- * @note
+ * @note Our common methods footprint
  *
  *
  */
@@ -33,11 +30,6 @@ trait TIOCvs[A] {
   def encoding: Codec
 
   /**
-   * @return Char, the line ending delimiter
-   */
-  def ending: Char
-
-  /**
    * @return Boolean, whether the first line is a header
    */
   def header: Boolean
@@ -48,7 +40,7 @@ trait TIOCvs[A] {
    * @param gZip, Boolean, whether to read  a compressed (gZip) file
    * @return A, populated data structure
    */
-  def csvRead(source: String, gZip: Boolean): A
+  def csvRead(source: String, gZip: Boolean): Frame[A]
 
   /**
    * Outputs source data to the 'target' file in csv format
@@ -58,6 +50,6 @@ trait TIOCvs[A] {
    * @param append, Boolean, whether to append (true) or to overwrite (false)
    * @note It is up to the operator to ensure correct filename extension
    */
-  def csvWrite(source: A, target: String, gZip: Boolean, append: Boolean): Unit
+  def csvWrite(source: Frame[A], target: String, gZip: Boolean, append: Boolean): Unit
 
 }
