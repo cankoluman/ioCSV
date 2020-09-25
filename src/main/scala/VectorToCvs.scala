@@ -7,6 +7,8 @@
 package ioCvs
 
 import java.io.{FileInputStream, FileOutputStream}
+import java.nio.charset.StandardCharsets
+
 import scala.collection.mutable.ArrayBuffer
 import scala.io.Codec
 import scala.reflect.ClassTag
@@ -26,6 +28,15 @@ import scala.reflect.ClassTag
 class VectorToCvs[A](override val separator: Char, override implicit val encoding: Codec,
                      override val header: Boolean)(implicit val c: ClassTag[A])
   extends CvsBase[Vector[Vector[A]]](separator, encoding, header) {
+
+  /**
+   * Constructor with defaults
+   * @note The default separator is ';', the default encoding is UTF-8, the default
+   *       line ending is '\n', and the header default is true
+   */
+  def this()(implicit c: ClassTag[A]) = {
+    this(';', StandardCharsets.UTF_8, true)(c)
+  }
 
   /**
    * Inputs source csv file to data structure A
