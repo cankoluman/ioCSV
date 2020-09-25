@@ -6,10 +6,11 @@
 
 package ioCvs
 
-import java.io.{BufferedReader, File, InputStream, InputStreamReader, OutputStream, OutputStreamWriter, Writer}
+import java.io.{BufferedReader, BufferedWriter, File, InputStream, InputStreamReader, OutputStream, OutputStreamWriter, Writer}
 import java.nio.charset.StandardCharsets
 import java.nio.file.Paths
 import java.util.zip.{GZIPInputStream, GZIPOutputStream}
+
 import scala.io.Codec
 
 /**
@@ -59,10 +60,10 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
    * @param gZip, Boolean, whether to output a compressed stream
    * @return Writer, a write stream
    */
-  protected def outputCharStream(source: OutputStream, gZip: Boolean): Writer = {
+  protected def outputCharStream(source: OutputStream, gZip: Boolean): BufferedWriter = {
     if (gZip)
-      return new OutputStreamWriter(new GZIPOutputStream(source), encoding.charSet)
-    new OutputStreamWriter(source, encoding.charSet)
+      return new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(source), encoding.charSet))
+    new BufferedWriter(new OutputStreamWriter(source, encoding.charSet))
   }
 
   /**

@@ -82,6 +82,7 @@ class VectorToCvs[A](override val separator: Char, override implicit val encodin
         start += CHUNK
         size -= CHUNK
       }
+      hOutput.newLine()
     }
 
     source.data.foreach(r => {
@@ -93,6 +94,7 @@ class VectorToCvs[A](override val separator: Char, override implicit val encodin
         start += CHUNK
         size -= CHUNK
       }
+      hOutput.newLine()
     })
 
     hOutput.flush()
