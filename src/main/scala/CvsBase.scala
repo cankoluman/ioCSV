@@ -28,15 +28,6 @@ import scala.io.Codec
 abstract class CvsBase[A](override val separator: Char, override implicit val encoding: Codec,
                           override val header: Boolean) extends TIOCvs[A] {
 
-  /**
-   * Constructor with defaults
-   * @note The default separator is ';', the default encoding is UTF-8, the default
-   *       line ending is '\n', and the header default is true
-   */
-  def this() = {
-    this(';', StandardCharsets.UTF_8, true)
-  }
-
   /*
   Utility Methods
    */
@@ -49,7 +40,7 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
    * @note BufferedReader.readline() will break at \n, \r or its combination.
    *       This should pick up all standard line endings
    */
-  protected def inputCharStream(hFile: InputStream, gZip: Boolean): BufferedReader = {
+  def inputCharStream(hFile: InputStream, gZip: Boolean): BufferedReader = {
     if (gZip)
       return new BufferedReader(new InputStreamReader(new GZIPInputStream(hFile), encoding.charSet))
     new BufferedReader(new InputStreamReader(hFile, encoding.charSet))
@@ -60,7 +51,7 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
    * @param gZip, Boolean, whether to output a compressed stream
    * @return Writer, a write stream
    */
-  protected def outputCharStream(source: OutputStream, gZip: Boolean): BufferedWriter = {
+  def outputCharStream(source: OutputStream, gZip: Boolean): BufferedWriter = {
     if (gZip)
       return new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(source), encoding.charSet))
     new BufferedWriter(new OutputStreamWriter(source, encoding.charSet))
@@ -70,7 +61,7 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
    * Creates the directory if it does not already exist
    * @param path, String, the directory path
    */
-  protected def makeDir(path: String): Unit = {
+  def makeDir(path: String): Unit = {
     val resultDir = new File(path)
     if (resultDir.mkdirs())
       println(s"created $path")
@@ -83,7 +74,7 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
    * @param input, String, filename and path
    * @return String, the path component
    */
-  protected def getPath(input: String): String = {
+  def getPath(input: String): String = {
     val p = Paths.get(input)
     p.getParent.toString
   }
@@ -91,5 +82,5 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
   /**
    * Stream chunk size
    */
-  protected val CHUNK: Int = 2048
+  val CHUNK: Int = 2048
 }
