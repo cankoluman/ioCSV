@@ -6,11 +6,9 @@
 
 package ioCvs
 
-import java.io.{BufferedReader, BufferedWriter, File, InputStream, InputStreamReader, OutputStream, OutputStreamWriter, Writer}
-import java.nio.charset.StandardCharsets
+import java.io.{BufferedReader, BufferedWriter, File, InputStream, InputStreamReader, OutputStream, OutputStreamWriter}
 import java.nio.file.Paths
 import java.util.zip.{GZIPInputStream, GZIPOutputStream}
-
 import scala.io.Codec
 
 /**
@@ -61,12 +59,20 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
    * Creates the directory if it does not already exist
    * @param path, String, the directory path
    */
-  def makeDir(path: String): Unit = {
-    val resultDir = new File(path)
-    if (resultDir.mkdirs())
-      println(s"created $path")
-    else
-      println(s"$path already exists or could not be created")
+  def makeDir(path: String): String = {
+    val target = new File(path)
+    try {
+      if (target.mkdirs()) {
+        println(s"created $path")
+        return path
+      }
+      val msg = s"Warning: $path already exists."
+      println(msg)
+      msg
+    }
+    catch {
+      case e: Exception => e.getStackTrace.mkString("\n")
+    }
   }
 
   /**
