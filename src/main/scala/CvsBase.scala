@@ -10,6 +10,7 @@ import java.io.{BufferedReader, BufferedWriter, File, InputStream, InputStreamRe
 import java.nio.file.Paths
 import java.util.zip.{GZIPInputStream, GZIPOutputStream}
 import scala.io.Codec
+import scala.reflect.ClassTag
 
 /**
  * Created on 23/09/2020.
@@ -29,6 +30,34 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
   /*
   Utility Methods
    */
+
+  /**
+   * @param in, Vector[String], the string vector to be cast
+   * @param c, classTag of the target type, which is passed from the calling class
+   * @tparam B, the target Type
+   * @return Vector[B], the 'converted' vector
+   * @note This is to convert a string vector in to other primitive AnyVal types.
+   *       If the type is not found in our conversion list, an exception is triggered
+   */
+  @throws(classOf[NumberFormatException])
+  def convert[B <: Any](in: Vector[String])(implicit c: ClassTag[B]): Vector[B] = {
+    val t = c.runtimeClass.getTypeName
+
+    // no need to convert string
+    if (t == "java.lang.String")
+      return in.asInstanceOf[Vector[B]]
+
+    in.map(elt => (t match {
+      case t if (t == "integer")  => elt.toInt
+      case t if (t == "double") => elt.toDouble
+//      case t if (t == "double") => elt.toDouble
+//      case t if (t == "double") => elt.toDouble
+//      case t if (t == "double") => elt.toDouble
+//      case t if (t == "java.lang.string") => elt.toDouble
+      case t if (t == "char") => elt.head: Char
+      case t if (t == "boolean") => elt.toBoolean
+    }).asInstanceOf[B])
+  }
 
   /**
    *
