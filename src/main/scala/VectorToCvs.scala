@@ -24,7 +24,7 @@ import scala.reflect.ClassTag
  *
  *
  */
-class VectorToCvs[A](override val separator: Char, override implicit val encoding: Codec,
+class VectorToCvs[A <: AnyVal](override val separator: Char, override implicit val encoding: Codec,
                      override val header: Boolean)(implicit val c: ClassTag[A])
   extends CvsBase[Vector[Vector[A]]](separator, encoding, header) {
 
@@ -51,14 +51,14 @@ class VectorToCvs[A](override val separator: Char, override implicit val encodin
     var headers: Option[Vector[String]] = None
 
     var line = hInput.readLine()
-    if (header & !line.isEmpty) {
+    if (line != null && header & !line.isEmpty) {
       headers = Some(line.split(separator.toString).toVector)
       line = hInput.readLine()
     }
 
-    while(!line.isEmpty){
-      val row = line.split(separator.toString).map(_.asInstanceOf[A])
-      data += row.toVector
+    while(line!= null && !line.isEmpty){
+      val row = line.split(separator.toString)
+      data += convert(row.toVector)
       line = hInput.readLine()
     }
 
