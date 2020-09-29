@@ -20,11 +20,21 @@ import scala.reflect.io.{Directory, Path}
 
 object Utility {
 
+  /**
+   * Check if directory at path exists
+   * @param path, String
+   * @return
+   */
   def dirExists(path: String): Boolean = {
     val candidate = Directory(path)
     candidate.exists && candidate.isDirectory
   }
 
+  /**
+   * Walk through target path and recursively delete directories
+   * @param path, String
+   * @return
+   */
   @tailrec
   def dirDeleteRecursive(path: String): Boolean = {
     if (!dirExists(path)) return false
