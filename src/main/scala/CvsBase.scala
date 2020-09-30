@@ -6,11 +6,13 @@
 
 package ioCvs
 
+import java.lang.{Class => JavaClass}
 import java.io.{BufferedReader, BufferedWriter, File, InputStream, InputStreamReader, OutputStream, OutputStreamWriter}
 import java.nio.file.Paths
 import java.util.zip.{GZIPInputStream, GZIPOutputStream}
 import scala.io.Codec
 import scala.reflect.ClassTag
+import scala.language.{existentials, implicitConversions}
 
 /**
  * Created on 23/09/2020.
@@ -27,36 +29,75 @@ import scala.reflect.ClassTag
 abstract class CvsBase[A](override val separator: Char, override implicit val encoding: Codec,
                           override val header: Boolean) extends TIOCvs[A] {
 
+  /**
+   * Additional derived types supported for conversion
+   */
+  val BIG_DECIMAL: String = classOf[BigDecimal].getTypeName
+  val BIG_INT: String = classOf[BigInt].getTypeName
+
+  /**
+   * Stream chunk size
+   */
+  val CHUNK: Int = 2048
+
   /*
   Utility Methods
    */
 
   /**
-   * @param in, Vector[String], the string vector to be cast
+   *
+   * @param t, JavaClass[T], the runtime class
+   * @param in, String, the string to be converted to JavaClass[T]
+   * @tparam B, the converted value
+   * @throws java.lang.NumberFormatException, the operator must ensure that the input string is legal
+   * @return B
+   * @note This is to convert a string vector into other selected, 'Any' derived types.
+   *       If the type is not found in our conversion list, no conversion is made
+   */
+  @throws(classOf[NumberFormatException])
+  def convert[B <: Any](t: JavaClass[B], in: String): B = {
+
+    // no need to convert string
+    if (t.isInstanceOf[String])
+      return in.asInstanceOf[B]
+
+    (t match {
+      // primitive types
+      case java.lang.Integer.TYPE   => in.toInt
+      case java.lang.Double.TYPE    => in.toDouble
+      case java.lang.Float.TYPE     => in.toFloat
+      case java.lang.Short.TYPE     => in.toShort
+      case java.lang.Long.TYPE      => in.toLong
+      case java.lang.Byte.TYPE      => in.toByte
+      case java.lang.Character.TYPE => in.head: Char
+      case java.lang.Boolean.TYPE   => in.toBoolean
+      case _                        => {
+        t.getTypeName match {
+          // derived types
+          case BIG_DECIMAL          => BigDecimal(in)
+          case BIG_INT              => BigInt(in)
+          // no conversion
+        case _                      => in
+        }
+      }
+    }).asInstanceOf[B]
+  }
+
+  /**
+   * @param in, Vector[String], the string vector to be converted
    * @param c, classTag of the target type, which is passed from the calling class
    * @tparam B, the target Type
    * @return Vector[B], the 'converted' vector
-   * @note This is to convert a string vector in to other primitive AnyVal types.
-   *       If the type is not found in our conversion list, an exception is triggered
+   * @note This is to convert a string vector into other selected, 'Any' derived types.
+   *       If the type is not found in our conversion list, no conversion is made
    */
   @throws(classOf[NumberFormatException])
   def convert[B <: Any](in: Vector[String])(implicit c: ClassTag[B]): Vector[B] = {
-    val t = c.runtimeClass.getTypeName
-
+    val t = c.runtimeClass
     // no need to convert string
-    if (t == "java.lang.String")
+    if (t.isInstanceOf[String])
       return in.asInstanceOf[Vector[B]]
-
-    in.map(elt => (t match {
-      case t if (t == "integer")  => elt.toInt
-      case t if (t == "double") => elt.toDouble
-//      case t if (t == "double") => elt.toDouble
-//      case t if (t == "double") => elt.toDouble
-//      case t if (t == "double") => elt.toDouble
-//      case t if (t == "java.lang.string") => elt.toDouble
-      case t if (t == "char") => elt.head: Char
-      case t if (t == "boolean") => elt.toBoolean
-    }).asInstanceOf[B])
+    in.map(convert(t, _).asInstanceOf[B])
   }
 
   /**
@@ -114,8 +155,4 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
     p.getParent.toString
   }
 
-  /**
-   * Stream chunk size
-   */
-  val CHUNK: Int = 2048
 }

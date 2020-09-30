@@ -6,12 +6,15 @@
 
 package ioCvs.test
 
+import java.nio.charset.StandardCharsets
+
 import ioCvs.CvsBase
 import org.mockito.Mockito.{CALLS_REAL_METHODS, when, withSettings}
 import org.scalatest.Assertions.convertToEqualizer
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.mockito.MockitoSugar
 
+import scala.io.Codec
 import scala.reflect.ClassTag
 
 /**
@@ -24,7 +27,10 @@ import scala.reflect.ClassTag
  */
 class CvsBaseTest extends AnyFunSuite with MockitoSugar {
 
-  val mockCvsBase: CvsBase[Double] = mock[CvsBase[Double]](withSettings().defaultAnswer(CALLS_REAL_METHODS))
+  val mockCvsBase: CvsBase[Double] = mock[CvsBase[Double]](withSettings()
+    .defaultAnswer(CALLS_REAL_METHODS)
+    .useConstructor(';', new Codec(StandardCharsets.UTF_8), false)
+  )
 
   test("Path is returned as expected"){
     val expected = "/some/path/to"
@@ -62,7 +68,7 @@ class CvsBaseTest extends AnyFunSuite with MockitoSugar {
   }
 
   /**
-   * Testing Boolean, Char, String, Byte, Short, Int, Long, Float
+   * Testing Boolean, Char, String, Byte, Short, Int, Long, Float, Double
    */
   test("Boolean types are converted correctly"){
     val test = Vector("true", "false", "false", "true")
@@ -90,4 +96,62 @@ class CvsBaseTest extends AnyFunSuite with MockitoSugar {
     actual.indices.foreach(i => assert(actual(i) === expected(i)))
   }
 
+  test("Byte types are converted correctly"){
+    val test = Vector("-128", "10", "28", "127")
+    val expected = Vector(-128.toByte, 10.toByte, 28.toByte, 127.toByte)
+    val actual = mockCvsBase.convert[Byte](test)
+    actual.indices.foreach(i => assert(actual(i) === expected(i)))
+  }
+
+  test("Short types are converted correctly"){
+    val test = Vector("-32768", "10", "28", "32767")
+    val expected = Vector[Short](-32768, 10, 28, 32767)
+    val actual = mockCvsBase.convert[Short](test)
+    actual.indices.foreach(i => assert(actual(i) === expected(i)))
+  }
+
+  test("Int types are converted correctly"){
+    val test = Vector("-2147483648", "10", "28", "2147483647")
+    val expected = Vector[Int](-2147483648, 10, 28, 2147483647)
+    val actual = mockCvsBase.convert[Int](test)
+    actual.indices.foreach(i => assert(actual(i) === expected(i)))
+  }
+
+  test("Long types are converted correctly"){
+    val test = Vector("-9223372036854775808", "10", "28", "9223372036854775807")
+    val expected = Vector[Long](-9223372036854775808L, 10, 28, 9223372036854775807L)
+    val actual = mockCvsBase.convert[Long](test)
+    actual.indices.foreach(i => assert(actual(i) === expected(i)))
+  }
+
+  test("Float types are converted correctly"){
+    val test = Vector("-9223.3720", "10.1", "28.2", "9223.33")
+    val expected = Vector[Float](-9223.3720f, 10.1f, 28.2f, 9223.33f)
+    val actual = mockCvsBase.convert[Float](test)
+    actual.indices.foreach(i => assert(actual(i) === expected(i)))
+  }
+
+  test("Double types are converted correctly"){
+    val test = Vector("-9223.3720", "10.1", "28.2", "9223.33")
+    val expected = Vector[Double](-9223.3720d, 10.1d, 28.2d, 9223.33d)
+    val actual = mockCvsBase.convert[Double](test)
+    actual.indices.foreach(i => assert(actual(i) === expected(i)))
+  }
+
+  /**
+   * Additional type conversions
+   */
+  test("BigDecimal type is converted correctly"){
+    val test = Vector("0.333333333333333333333333")
+    val expected = Vector[BigDecimal](BigDecimal("0.333333333333333333333333"))
+    val actual = mockCvsBase.convert[BigDecimal](test)
+    actual.indices.foreach(i => assert(actual(i) === expected(i)))
+  }
+
+  test("BigInt type is converted correctly"){
+    val test = Vector("92233720368547758071234567890")
+    val expected = Vector[BigInt](BigInt("92233720368547758071234567890"))
+    val actual = mockCvsBase.convert[BigInt](test)
+    actual.indices.foreach(i => assert(actual(i) === expected(i)))
+  }
 }
