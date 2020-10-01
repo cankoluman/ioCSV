@@ -9,7 +9,7 @@ package ioCvs.test
 import java.nio.charset.StandardCharsets
 
 import ioCvs.{Frame, VectorToCvs}
-import org.scalatest.BeforeAndAfterAll
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.mockito.MockitoSugar
 
@@ -24,10 +24,12 @@ import scala.reflect.io.File
  *
  *
  */
-class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterAll{
+class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterEach with BeforeAndAfterAll{
 
   val testDir = "./TEST/VectorToCvsTest"
-  
+  val file = s"$testDir/data.csv"
+  val fileGz = s"$testDir/data.csv.gz"
+
   /*
   Test Data Structures
    */
@@ -45,6 +47,7 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterA
   )
   /**
    * Transposed Data, Row i, Column j => j.i
+   * Reserved for the future
    */
   val testDataT: Vector[Vector[Double]] = Vector(
     Vector(0.1, 1.1, 2.1, 3.1, 4.1, 5.1),
@@ -60,6 +63,15 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterA
 
   val default = new VectorToCvs[Double]()
   val custom = new VectorToCvs[Double](',', StandardCharsets.ISO_8859_1, false)
+
+  override def beforeEach(): Unit = {
+    val hFile = File(file)
+    val hFileGz = File(fileGz)
+    if (hFile.exists) hFile.delete()
+    if (hFileGz.exists) hFileGz.delete()
+  }
+
+  override def afterEach(): Unit = beforeEach()
 
   override def beforeAll(){}
 
@@ -96,7 +108,6 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterA
   }
 
   test("Not transposed data without header is written / read to CVS file as expected") {
-    val file = s"$testDir/data.csv"
     val expected = Frame(header = None, data = testData)
     custom.csvWrite(expected, file, gZip = false)
 
@@ -106,8 +117,8 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterA
     val actual = custom.csvRead(file, gZip = false)
     assert(actual.header.isEmpty, s"Error: $file read, header should be empty but is not")
 
-    val rows = testData.length
-    val cols = testData.head.length
+    val rows = actual.data.length
+    val cols = actual.data.head.length
 
     (0 until rows).foreach(i =>
       (0 until cols).foreach(j => {
@@ -117,23 +128,20 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterA
           s"Error: mismatch at row $i, col $j; actual $a expected $e")
       })
     )
-
-    if (hFile.exists) hFile.delete()
   }
 
   test("Not transposed data with header is written / read to compressed CVS file as expected") {
-    val file = s"$testDir/data.csv.gz"
     val expected = Frame(header = Some(testHeader), data = testData)
-    default.csvWrite(expected, file, gZip = true)
+    default.csvWrite(expected, fileGz, gZip = true)
 
-    val hFile = File(file)
+    val hFile = File(fileGz)
     assert(hFile.exists, s"File $file could not be written")
 
-    val actual = default.csvRead(file, gZip = true)
-    assert(actual.header.isDefined, s"Error: $file read, header should be full but is not")
+    val actual = default.csvRead(fileGz, gZip = true)
+    assert(actual.header.isDefined, s"Error: $fileGz read, header should be full but is not")
 
-    val rows = testData.length
-    val cols = testData.head.length
+    val rows = actual.data.length
+    val cols = actual.data.head.length
 
     (0 until rows).foreach(i =>
       (0 until cols).foreach(j => {
@@ -143,7 +151,37 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterA
           s"Error: mismatch at row $i, col $j; actual $a expected $e")
       })
     )
+  }
 
-    if (hFile.exists) hFile.delete()
+  test("Not transposed data with header is written, appended to, and read from compressed CVS file as expected") {
+    val write1 = Frame(header = Some(testHeader), data = testData)
+    val write2 = Frame(header = Some(testHeader), data = testData.take(5))
+    val expected = Frame(header = Some(testHeader), data = testData ++ testData.take(5))
+    default.csvWrite(write1, fileGz, gZip = true)
+    default.csvWrite(write2, fileGz, gZip = true, append = true)
+
+    val hFileGz = File(fileGz)
+    assert(hFileGz.exists, s"File $fileGz could not be written")
+
+    val actual = default.csvRead(fileGz, gZip = true)
+    assert(actual.header.isDefined, s"Error: $fileGz read, header should be full but is not")
+
+    val rows = actual.data.length
+    val cols = actual.data.head.length
+
+    assert(rows === expected.data.length, s"Got ${rows} rows, expected ${expected.data.length}")
+    assert(cols === expected.data.head.length,
+      s"Got ${cols} cols, expected ${expected.data.head.length}")
+
+    (0 until rows).foreach(i =>
+      (0 until cols).foreach(j => {
+        val a = actual.data(i)(j)
+        val e = expected.data(i)(j)
+        assert(a === e,
+          s"Error: mismatch at row $i, col $j; actual $a expected $e")
+      })
+    )
+
+    if (hFileGz.exists) hFileGz.delete()
   }
 }
