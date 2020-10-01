@@ -26,7 +26,7 @@ class CvsBaseTest extends AnyFunSuite with MockitoSugar {
 
   val mockCvsBase: CvsBase[Double] = mock[CvsBase[Double]](withSettings()
     .defaultAnswer(CALLS_REAL_METHODS)
-    .useConstructor(';', new Codec(StandardCharsets.UTF_8), false)
+    .useConstructor(';', Codec(StandardCharsets.UTF_8), false)
   )
 
   test("Path is returned as expected"){

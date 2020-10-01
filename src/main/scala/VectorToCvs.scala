@@ -34,7 +34,7 @@ class VectorToCvs[A <: AnyVal](override val separator: Char, override implicit v
    *       line ending is '\n', and the header default is true
    */
   def this()(implicit c: ClassTag[A]) = {
-    this(';', StandardCharsets.UTF_8, true)(c)
+    this(';', Codec(StandardCharsets.UTF_8), true)(c)
   }
 
   /**

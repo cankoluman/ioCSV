@@ -62,7 +62,7 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterE
   )
 
   val default = new VectorToCvs[Double]()
-  val custom = new VectorToCvs[Double](',', StandardCharsets.ISO_8859_1, false)
+  val custom = new VectorToCvs[Double](',', Codec(StandardCharsets.ISO_8859_1), false)
 
   override def beforeEach(): Unit = {
     val hFile = File(file)
