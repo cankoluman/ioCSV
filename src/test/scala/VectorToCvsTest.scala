@@ -8,12 +8,10 @@
 package ioCvs.test
 
 import java.nio.charset.StandardCharsets
-
 import ioCvs.{Frame, VectorToCvs}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.mockito.MockitoSugar
-
 import scala.io.Codec
 import scala.reflect.io.File
 

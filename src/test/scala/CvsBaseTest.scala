@@ -8,7 +8,6 @@
 package ioCvs.test
 
 import java.nio.charset.StandardCharsets
-
 import ioCvs.CvsBase
 import org.mockito.Mockito.{CALLS_REAL_METHODS, withSettings}
 import org.scalatest.funsuite.AnyFunSuite
