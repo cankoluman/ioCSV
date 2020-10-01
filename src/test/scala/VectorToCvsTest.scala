@@ -1,0 +1,149 @@
+/*
+ * Copyright (c) 2020. Can Koluman. All rights reserved save for  open
+ * sourced components for which respective licenses apply.
+ * Last modified 25/09/2020, 11:00
+ */
+
+package ioCvs.test
+
+import java.nio.charset.StandardCharsets
+
+import ioCvs.{Frame, VectorToCvs}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatestplus.mockito.MockitoSugar
+
+import scala.io.Codec
+import scala.reflect.io.File
+
+/**
+ * Created on 25/09/2020.
+ *
+ * @author Can Koluman
+ * @note We only test concrete instances
+ *
+ *
+ */
+class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterAll{
+
+  val testDir = "./TEST/VectorToCvsTest"
+  
+  /*
+  Test Data Structures
+   */
+  val testHeader: Vector[String] = Vector("A", "B", "C", "D", "E", "F", "G", "H", "I")
+  /**
+   * Row i, Column j => i.j
+   */
+  val testData: Vector[Vector[Double]] = Vector(
+    Vector(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
+    Vector(1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9),
+    Vector(2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9),
+    Vector(3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9),
+    Vector(4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9),
+    Vector(5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9)
+  )
+  /**
+   * Transposed Data, Row i, Column j => j.i
+   */
+  val testDataT: Vector[Vector[Double]] = Vector(
+    Vector(0.1, 1.1, 2.1, 3.1, 4.1, 5.1),
+    Vector(0.2, 1.2, 2.2, 3.2, 4.2, 5.2),
+    Vector(0.3, 1.3, 2.3, 3.3, 4.3, 5.3),
+    Vector(0.4, 1.4, 2.4, 3.4, 4.4, 5.4),
+    Vector(0.5, 1.5, 2.5, 3.5, 4.5, 5.5),
+    Vector(0.6, 1.6, 2.6, 3.6, 4.6, 5.6),
+    Vector(0.7, 1.7, 2.7, 3.7, 4.7, 5.7),
+    Vector(0.8, 1.8, 2.8, 3.8, 4.8, 5.8),
+    Vector(0.9, 1.9, 2.9, 3.9, 4.9, 5.9)
+  )
+
+  val default = new VectorToCvs[Double]()
+  val custom = new VectorToCvs[Double](',', StandardCharsets.ISO_8859_1, false)
+
+  override def beforeAll(){}
+
+  override def afterAll(){
+    Utility.dirDeleteRecursive(testDir)
+  }
+
+  test("Default constructor initializes as expected") {
+    val aSep = default.separator
+    val eSep = ';'
+    assert(aSep === eSep, s"Incorrect Separator: actual $aSep, expected $eSep")
+
+    val aEnc = default.encoding.charSet
+    val eEnc = Codec(StandardCharsets.UTF_8)
+    assert(aEnc === eEnc.charSet, s"Incorrect Separator: actual $aEnc, expected $eEnc")
+
+    val aHdr = default.header
+    val eHdr = true
+    assert(aHdr === eHdr, s"Incorrect Separator: actual $aHdr, expected $eHdr")
+  }
+
+  test("Custom constructor initializes as expected") {
+    val aSep = custom.separator
+    val eSep = ','
+    assert(aSep === eSep, s"Incorrect Separator: actual $aSep, expected $eSep")
+
+    val aEnc = custom.encoding.charSet
+    val eEnc = Codec(StandardCharsets.ISO_8859_1)
+    assert(aEnc === eEnc.charSet, s"Incorrect Separator: actual $aEnc, expected $eEnc")
+
+    val aHdr = custom.header
+    val eHdr = false
+    assert(aHdr === eHdr, s"Incorrect Separator: actual $aHdr, expected $eHdr")
+  }
+
+  test("Not transposed data without header is written / read to CVS file as expected") {
+    val file = s"$testDir/data.csv"
+    val expected = Frame(header = None, data = testData)
+    custom.csvWrite(expected, file, gZip = false)
+
+    val hFile = File(file)
+    assert(hFile.exists, s"File $file could not be written")
+
+    val actual = custom.csvRead(file, gZip = false)
+    assert(actual.header.isEmpty, s"Error: $file read, header should be empty but is not")
+
+    val rows = testData.length
+    val cols = testData.head.length
+
+    (0 until rows).foreach(i =>
+      (0 until cols).foreach(j => {
+        val a = actual.data(i)(j)
+        val e = testData(i)(j)
+        assert(a === e,
+          s"Error: mismatch at row $i, col $j; actual $a expected $e")
+      })
+    )
+
+    if (hFile.exists) hFile.delete()
+  }
+
+  test("Not transposed data with header is written / read to compressed CVS file as expected") {
+    val file = s"$testDir/data.csv.gz"
+    val expected = Frame(header = Some(testHeader), data = testData)
+    default.csvWrite(expected, file, gZip = true)
+
+    val hFile = File(file)
+    assert(hFile.exists, s"File $file could not be written")
+
+    val actual = default.csvRead(file, gZip = true)
+    assert(actual.header.isDefined, s"Error: $file read, header should be full but is not")
+
+    val rows = testData.length
+    val cols = testData.head.length
+
+    (0 until rows).foreach(i =>
+      (0 until cols).foreach(j => {
+        val a = actual.data(i)(j)
+        val e = testData(i)(j)
+        assert(a === e,
+          s"Error: mismatch at row $i, col $j; actual $a expected $e")
+      })
+    )
+
+    if (hFile.exists) hFile.delete()
+  }
+}
