@@ -1,7 +1,8 @@
 /*
- * Copyright (c) 2020. Can Koluman. All rights reserved save for  open
- * sourced components for which respective licenses apply.
- * Last modified 25/09/2020, 12:07
+ * Copyright (c) 2020. Can Koluman.
+ * Authored components released under Apache 2.0.
+ * For open source components / libraries, respective origin licenses apply.
+ * Last modified 01/10/2020, 18:06
  */
 
 package ioCvs.test
