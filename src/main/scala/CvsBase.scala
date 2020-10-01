@@ -30,10 +30,11 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
                           override val header: Boolean) extends TIOCvs[A] {
 
   /**
-   * Additional derived types supported for conversion
+   * Additional derived types
    */
   val BIG_DECIMAL: String = classOf[BigDecimal].getTypeName
   val BIG_INT: String = classOf[BigInt].getTypeName
+  val STRING: String = classOf[String].getTypeName
 
   /**
    * Stream chunk size
@@ -57,10 +58,6 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
   @throws(classOf[NumberFormatException])
   def convert[B <: Any](t: JavaClass[B], in: String): B = {
 
-    // no need to convert string
-    if (t.isInstanceOf[String])
-      return in.asInstanceOf[B]
-
     (t match {
       // primitive types
       case java.lang.Integer.TYPE   => in.toInt
@@ -71,15 +68,16 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
       case java.lang.Byte.TYPE      => in.toByte
       case java.lang.Character.TYPE => in.head: Char
       case java.lang.Boolean.TYPE   => in.toBoolean
-      case _                        => {
+      case _                        =>
         t.getTypeName match {
           // derived types
           case BIG_DECIMAL          => BigDecimal(in)
           case BIG_INT              => BigInt(in)
+          // String
+          case STRING               => in
           // no conversion
-        case _                      => in
+          case _                    => in
         }
-      }
     }).asInstanceOf[B]
   }
 
@@ -95,7 +93,7 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
   def convert[B <: Any](in: Vector[String])(implicit c: ClassTag[B]): Vector[B] = {
     val t = c.runtimeClass
     // no need to convert string
-    if (t.isInstanceOf[String])
+    if (t.getTypeName == STRING)
       return in.asInstanceOf[Vector[B]]
     in.map(convert(t, _).asInstanceOf[B])
   }
