@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="Can Koluman" />
+  <settings default="Can Koluman">
+    <module2copyright>
+      <element module="All" copyright="Can Koluman" />
+    </module2copyright>
+  </settings>
 </component>
