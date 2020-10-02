@@ -5,10 +5,10 @@
  * Last modified 01/10/2020, 18:06
  */
 
-package ioCvs.test
+package com.cankoluman.ioCvs.test
 
 import java.nio.charset.StandardCharsets
-import ioCvs.CvsBase
+import com.cankoluman.ioCvs.CvsBase
 import org.mockito.Mockito.{CALLS_REAL_METHODS, withSettings}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.mockito.MockitoSugar
@@ -51,7 +51,7 @@ class CvsBaseTest extends AnyFunSuite with MockitoSugar {
 
   // The directory will be created in the current working directory
   // We assume it will remain empty
-  test("When directory already exists a warning will be issues") {
+  test("When directory already exists a warning will be issued") {
     val dir = "./TEST/this/is/a/test"
     val expected = s"Warning: $dir already exists."
     if (Utility.dirExists(dir))

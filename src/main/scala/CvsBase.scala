@@ -5,7 +5,7 @@
  * Last modified 01/10/2020, 18:06
  */
 
-package ioCvs
+package com.cankoluman.ioCvs
 
 import java.lang.{Class => JavaClass}
 import java.io.{BufferedReader, BufferedWriter, File, InputStream, InputStreamReader, OutputStream, OutputStreamWriter}
