@@ -16,7 +16,7 @@
 
     <name>ioCVS</name>
     <description>A simple CVS io Library in Scala</description>
-    <url></url>
+    <url>https://github.com/cankoluman/ioCVS</url>
 
     <licenses>
         <license>
@@ -27,7 +27,7 @@
     </licenses>
 
     <scm>
-        <url></url>
+        <url>https://github.com/cankoluman/ioCVS</url>
     </scm>
 
     <properties>
