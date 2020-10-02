@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Main-Class: 
+Class-Path: scalatest_2.13-3.2.1.jar scala-library-2.13.3.jar scalatest-
+ core_2.13-3.2.1.jar scalatest-compatible-3.2.1.jar scalactic_2.13-3.2.1
+ .jar scala-xml_2.13-1.2.0.jar scalatest-featurespec_2.13-3.2.1.jar scal
+ atest-flatspec_2.13-3.2.1.jar scalatest-freespec_2.13-3.2.1.jar scalate
+ st-funsuite_2.13-3.2.1.jar scalatest-funspec_2.13-3.2.1.jar scalatest-p
+ ropspec_2.13-3.2.1.jar scalatest-refspec_2.13-3.2.1.jar scalatest-words
+ pec_2.13-3.2.1.jar scalatest-diagrams_2.13-3.2.1.jar scalatest-matchers
+ -core_2.13-3.2.1.jar scalatest-shouldmatchers_2.13-3.2.1.jar scalatest-
+ mustmatchers_2.13-3.2.1.jar scala-reflect-2.13.3.jar mockito-3-4_2.13-3
+ .1.3.0.jar scala-library-2.13.3.jar mockito-core-3.4.6.jar byte-buddy-1
+ .10.13.jar byte-buddy-agent-1.10.13.jar objenesis-2.6.jar scalatest_2.1
+ 3-3.1.3.jar scalactic_2.13-3.1.3.jar scala-reflect-2.13.3.jar scala-xml
+ _2.13-1.2.0.jar scala-library-2.13.3.jar scala-reflect-2.13.3.jar scala
+ -library-2.13.3-sources.jar mockito-core-3.5.7.jar byte-buddy-1.10.13.j
+ ar byte-buddy-agent-1.10.13.jar objenesis-3.1.jar
+
