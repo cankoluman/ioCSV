@@ -5,10 +5,10 @@
  * Last modified 01/10/2020, 18:06
  */
 
-package ioCvs.test
+package com.cankoluman.ioCvs.test
 
 import java.nio.charset.StandardCharsets
-import ioCvs.{Frame, VectorToCvs}
+import com.cankoluman.ioCvs.{Frame, VectorToCvs}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.mockito.MockitoSugar
@@ -72,9 +72,9 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterE
 
   override def afterEach(): Unit = beforeEach()
 
-  override def beforeAll(){}
+  override def beforeAll(): Unit = {}
 
-  override def afterAll(){
+  override def afterAll(): Unit = {
     Utility.dirDeleteRecursive(testDir)
   }
 

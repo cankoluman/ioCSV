@@ -5,7 +5,7 @@
  * Last modified 01/10/2020, 18:06
  */
 
-package ioCvs
+package com.cankoluman.ioCvs
 
 import scala.io.Codec
 
