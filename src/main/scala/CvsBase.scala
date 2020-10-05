@@ -17,13 +17,12 @@ import scala.language.{existentials, implicitConversions}
 
 /**
  * Created on 23/09/2020.
- *
+ * This class provides utility methods for file io handling
  * @author Can Koluman
  * @param separator Char, the cell (column) separator
  * @param encoding Codec, character set encoding
  * @param header Boolean, whether to read / write any column headers
  * @tparam A The full type of the repeated data. E.g. Vector[Vector[Double]]
- * @note This class provides default constructors, and utility methods for file io handling
  *
  *
  */
@@ -47,14 +46,13 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
    */
 
   /**
-   *
+   * This is to convert a string into other selected, 'Any' derived types.
    * @param t, JavaClass[T], the runtime class
    * @param in, String, the string to be converted to JavaClass[T]
    * @tparam B, the converted value
    * @throws java.lang.NumberFormatException, the operator must ensure that the input string is legal
    * @return B
-   * @note This is to convert a string vector into other selected, 'Any' derived types.
-   *       If the type is not found in our conversion list, no conversion is made
+   * @note If the type is not found in our conversion list, no conversion is made
    */
   @throws(classOf[NumberFormatException])
   def convert[B <: Any](t: JavaClass[B], in: String): B = {
@@ -83,12 +81,12 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
   }
 
   /**
+   * This is to convert a string vector into other selected, 'Any' derived types.
    * @param in, Vector[String], the string vector to be converted
    * @param c, classTag of the target type, which is passed from the calling class
    * @tparam B, the target Type
    * @return Vector[B], the 'converted' vector
-   * @note This is to convert a string vector into other selected, 'Any' derived types.
-   *       If the type is not found in our conversion list, no conversion is made
+   * @note If the type is not found in our conversion list, no conversion is made
    */
   @throws(classOf[NumberFormatException])
   def convert[B <: Any](in: Vector[String])(implicit c: ClassTag[B]): Vector[B] = {
@@ -100,7 +98,7 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
   }
 
   /**
-   *
+   * Utility method for creating a read stream
    * @param hFile, InputStream, the stream to be read from file
    * @param gZip, Boolean, whether to output a compressed stream
    * @return BufferedReader, a (buffered) read stream
@@ -114,6 +112,7 @@ abstract class CvsBase[A](override val separator: Char, override implicit val en
   }
 
   /**
+   * Utility method for creating a write stream
    * @param source, OutputStream, the stream to be written to file
    * @param gZip, Boolean, whether to output a compressed stream
    * @return Writer, a write stream

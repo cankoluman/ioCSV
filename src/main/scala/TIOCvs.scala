@@ -11,32 +11,33 @@ import scala.io.Codec
 
 /**
  * Created on 23/09/2020.
- *
+ * Our 'common methods' footprint
  * @author Can Koluman
- * @note Our common methods footprint
- *
  *
  */
 trait TIOCvs[A] {
 
 
   /**
+   * The csv element separator
    * @return Char, the csv file separator
    */
   def separator: Char
 
   /**
-   * @return Codec, the encoding of the CVS file
+   * The encoding of the Csv file
+   * @return Codec, the encoding of the Csv file
    */
   def encoding: Codec
 
   /**
+   * True if the first line is a header, false otherwise
    * @return Boolean, whether the first line is a header
    */
   def header: Boolean
 
   /**
-   * Inputs source csv file to data structure A
+   * Reads source csv file into data structure A.
    * @param source, String, path including filename and extension
    * @param gZip, Boolean, whether to read  a compressed (gZip) file
    * @return A, populated data structure
@@ -44,7 +45,7 @@ trait TIOCvs[A] {
   def csvRead(source: String, gZip: Boolean): Frame[A]
 
   /**
-   * Outputs source data to the 'target' file in csv format
+   * Outputs source data to the target file in csv format.
    * @param source, The data type determined in the implementation
    * @param target, String, path including filename and extension
    * @param gZip, Boolean, whether to compress (gZip) the output file

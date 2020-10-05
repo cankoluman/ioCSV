@@ -15,14 +15,12 @@ import scala.reflect.ClassTag
 
 /**
  * Created on 23/09/2020.
- *
+ * Output to csv of source data in Vector[Vector[A]] format.
  * @author Can Koluman
  * @param separator Char, the cell (column) separator
  * @param encoding Codec, character set encoding
  * @param header Boolean, whether to read / write any column headers
  * @tparam A The cell type of the repeated data. E.g. Double
- * @note
- *
  *
  */
 class VectorToCvs[A <: AnyVal](override val separator: Char, override implicit val encoding: Codec,
@@ -39,8 +37,7 @@ class VectorToCvs[A <: AnyVal](override val separator: Char, override implicit v
   }
 
   /**
-   * Inputs source csv file to data structure A
-   *
+   * Reads source csv file into data structure Vector[Vector[A]]
    * @param source , String, path including filename and extension
    * @param gZip   , Boolean, whether to read  a compressed (gZip) file
    * @return A, populated data structure
@@ -67,7 +64,9 @@ class VectorToCvs[A <: AnyVal](override val separator: Char, override implicit v
   }
 
   /**
-   * Outputs source data to the 'target' file in csv format
+   * Outputs source data to the 'target' file in csv format.
+   * It is up to the operator to ensure correct filename extension,
+   * use of appropriate separator etc.
    * @param source, The data type determined in the implementation
    * @param target, String, path including filename and extension
    * @param gZip, Boolean, whether to compress (gZip) the output file

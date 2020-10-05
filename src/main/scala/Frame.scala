@@ -9,11 +9,9 @@ package com.cankoluman.ioCvs
 
 /**
  * Created on 24/09/2020.
- *
+ * Just a very light-weight Dataframe concept as a wrapper for csv data.
  * @author Can Koluman
- * @note Just a very light-weight Dataframe concept as a wrapper for the
- *       with, or without header, csv data
- *
+ * @note With, or without header.
  *
  */
 case class Frame[A](header: Option[Vector[String]], data: A) {
