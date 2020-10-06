@@ -1,7 +1,7 @@
 ## ioCSV v 0.4
 ###### Can Koluman, PhD Candidate, City, University of London, Department of Computer Science
 
-**A simple CSV io Library in Scala**
+**A simple CSV (comma separated values) io Library in Scala**
 https://github.com/cankoluman/ioCSV
 
 Introduction:
