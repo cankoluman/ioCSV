@@ -23,7 +23,7 @@ import scala.reflect.ClassTag
  * @tparam A The cell type of the repeated data. E.g. Double
  *
  */
-class VectorToCvs[A <: AnyVal](override val separator: Char, override implicit val encoding: Codec,
+class VectorToCvs[A <: Any](override val separator: Char, override implicit val encoding: Codec,
                      override val header: Boolean)(implicit val c: ClassTag[A])
   extends CvsBase[Vector[Vector[A]]](separator, encoding, header) {
 
