@@ -2,7 +2,7 @@
   <artifact name="ioCSV:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/ioCSV_jar</output-path>
     <root id="root">
-      <element id="archive" name="ioCVS.jar">
+      <element id="archive" name="ioCSV.jar">
         <element id="module-output" name="ioCSV" />
       </element>
       <element id="library" level="project" name="org.scalatest:scalatest_2.13:3.2.1" />
