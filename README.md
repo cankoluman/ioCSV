@@ -29,6 +29,14 @@ Dependencies:
 - Scalatestplus:mockito 3-4_2.13:3.1.3.0 (Maven)
 - Mockito Core 3.5.7 (Maven)
 
+TO DO:
+-
+- Add csv io for transposed `Vector[Vector[A]]`
+- Add csv io for `ListMap[String, Vector[A]]`
+- Add csv io for `DenseMatrix[A]` (Breeze)
+
+
+
 ###### Copyright Notices
 - &copy; 2020 Copyright, Can Koluman. Apache 2.0 Licence for authored components.
 
