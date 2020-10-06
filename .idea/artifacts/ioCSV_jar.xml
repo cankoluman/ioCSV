@@ -1,9 +1,9 @@
 <component name="ArtifactManager">
-  <artifact name="ioCVS:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/ioCVS_jar</output-path>
+  <artifact name="ioCSV:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ioCSV_jar</output-path>
     <root id="root">
       <element id="archive" name="ioCVS.jar">
-        <element id="module-output" name="ioCVS" />
+        <element id="module-output" name="ioCSV" />
       </element>
       <element id="library" level="project" name="org.scalatest:scalatest_2.13:3.2.1" />
       <element id="library" level="project" name="org.scalatestplus:mockito-3-4_2.13:3.1.3.0" />

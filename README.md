@@ -1,8 +1,8 @@
-## ioCVS v 0.4
+## ioCSV v 0.4
 ###### Can Koluman, PhD Candidate, City, University of London, Department of Computer Science
 
-**A simple CVS io Library in Scala**
-https://github.com/cankoluman/ioCVS
+**A simple CSV io Library in Scala**
+https://github.com/cankoluman/ioCSV
 
 Introduction:
 -
@@ -11,7 +11,7 @@ The to be exported data is wrapped in a `Frame[A]` structure,
 which is passed to the `csvRead(source: String, gZip: Boolean): Frame[A]` 
 or `csvWrite(source: Frame[A], target: String, gZip: Boolean, append: Boolean): Unit` 
 methods. At the moment, we only have 
-read / write for `[A] = Vector[Vector[B]]` via the `VectorToCvs` class. More info in the comments.
+read / write for `[A] = Vector[Vector[B]]` via the `VectorToCsv` class. More info in the comments.
 The implementation will grow slightly over time.  
 
 Customizables:

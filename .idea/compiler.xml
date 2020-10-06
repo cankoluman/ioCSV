@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ioCVS" />
+        <module name="ioCSV" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ioCVS" target="1.5" />
+      <module name="ioCSV" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

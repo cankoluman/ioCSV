@@ -5,7 +5,7 @@
  * Last modified 01/10/2020, 18:06
  */
 
-package com.cankoluman.ioCvs
+package com.cankoluman.ioCsv
 
 import java.lang.{Class => JavaClass}
 import java.io.{BufferedReader, BufferedWriter, File, InputStream, InputStreamReader, OutputStream, OutputStreamWriter}
@@ -26,8 +26,8 @@ import scala.language.{existentials, implicitConversions}
  *
  *
  */
-abstract class CvsBase[A](override val separator: Char, override implicit val encoding: Codec,
-                          override val header: Boolean) extends TIOCvs[A] {
+abstract class CsvBase[A](override val separator: Char, override implicit val encoding: Codec,
+                          override val header: Boolean) extends TIOCsv[A] {
 
   /**
    * Additional derived types

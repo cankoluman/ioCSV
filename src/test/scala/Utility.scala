@@ -5,7 +5,7 @@
  * Last modified 01/10/2020, 18:06
  */
 
-package com.cankoluman.ioCvs.test
+package com.cankoluman.ioCsv.test
 
 import scala.annotation.tailrec
 import scala.reflect.io.{Directory, Path}

@@ -5,7 +5,7 @@
  * Last modified 01/10/2020, 18:06
  */
 
-package com.cankoluman.ioCvs
+package com.cankoluman.ioCsv
 
 /**
  * Created on 24/09/2020.

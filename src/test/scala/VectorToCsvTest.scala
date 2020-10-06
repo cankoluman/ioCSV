@@ -5,10 +5,10 @@
  * Last modified 01/10/2020, 18:06
  */
 
-package com.cankoluman.ioCvs.test
+package com.cankoluman.ioCsv.test
 
 import java.nio.charset.StandardCharsets
-import com.cankoluman.ioCvs.{Frame, VectorToCvs}
+import com.cankoluman.ioCsv.{Frame, VectorToCsv}
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.mockito.MockitoSugar
@@ -23,9 +23,9 @@ import scala.reflect.io.File
  *
  *
  */
-class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterEach with BeforeAndAfterAll{
+class VectorToCsvTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterEach with BeforeAndAfterAll{
 
-  val testDir = "./TEST/VectorToCvsTest"
+  val testDir = "./TEST/VectorToCsvTest"
   val file = s"$testDir/data.csv"
   val fileGz = s"$testDir/data.csv.gz"
 
@@ -60,8 +60,8 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterE
     Vector(0.9, 1.9, 2.9, 3.9, 4.9, 5.9)
   )
 
-  val default = new VectorToCvs[Double]()
-  val custom = new VectorToCvs[Double](',', Codec(StandardCharsets.ISO_8859_1), false)
+  val default = new VectorToCsv[Double]()
+  val custom = new VectorToCsv[Double](',', Codec(StandardCharsets.ISO_8859_1), false)
 
   override def beforeEach(): Unit = {
     val hFile = File(file)
@@ -106,7 +106,7 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterE
     assert(aHdr === eHdr, s"Incorrect Separator: actual $aHdr, expected $eHdr")
   }
 
-  test("Not transposed data without header is written / read to CVS file as expected") {
+  test("Not transposed data without header is written / read to CSV file as expected") {
     val expected = Frame(header = None, data = testData)
     custom.csvWrite(expected, file, gZip = false)
 
@@ -129,7 +129,7 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterE
     )
   }
 
-  test("Not transposed data with header is written / read to compressed CVS file as expected") {
+  test("Not transposed data with header is written / read to compressed CSV file as expected") {
     val expected = Frame(header = Some(testHeader), data = testData)
     default.csvWrite(expected, fileGz, gZip = true)
 
@@ -152,7 +152,7 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterE
     )
   }
 
-  test("Not transposed data with header is written, appended to, and read from compressed CVS file as expected") {
+  test("Not transposed data with header is written, appended to, and read from compressed CSV file as expected") {
     val write1 = Frame(header = Some(testHeader), data = testData)
     val write2 = Frame(header = Some(testHeader), data = testData.take(5))
     val expected = Frame(header = Some(testHeader), data = testData ++ testData.take(5))
@@ -168,9 +168,9 @@ class VectorToCvsTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterE
     val rows = actual.data.length
     val cols = actual.data.head.length
 
-    assert(rows === expected.data.length, s"Got ${rows} rows, expected ${expected.data.length}")
+    assert(rows === expected.data.length, s"Got $rows rows, expected ${expected.data.length}")
     assert(cols === expected.data.head.length,
-      s"Got ${cols} cols, expected ${expected.data.head.length}")
+      s"Got $cols cols, expected ${expected.data.head.length}")
 
     (0 until rows).foreach(i =>
       (0 until cols).foreach(j => {

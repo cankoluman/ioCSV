@@ -5,7 +5,7 @@
  * Last modified 01/10/2020, 18:06
  */
 
-package com.cankoluman.ioCvs
+package com.cankoluman.ioCsv
 
 import scala.io.Codec
 
@@ -15,7 +15,7 @@ import scala.io.Codec
  * @author Can Koluman
  *
  */
-trait TIOCvs[A] {
+trait TIOCsv[A] {
 
 
   /**

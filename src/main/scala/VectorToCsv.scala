@@ -5,7 +5,7 @@
  * Last modified 01/10/2020, 18:06
  */
 
-package com.cankoluman.ioCvs
+package com.cankoluman.ioCsv
 
 import java.io.{FileInputStream, FileOutputStream}
 import java.nio.charset.StandardCharsets
@@ -23,9 +23,9 @@ import scala.reflect.ClassTag
  * @tparam A The cell type of the repeated data. E.g. Double
  *
  */
-class VectorToCvs[A <: Any](override val separator: Char, override implicit val encoding: Codec,
-                     override val header: Boolean)(implicit val c: ClassTag[A])
-  extends CvsBase[Vector[Vector[A]]](separator, encoding, header) {
+class VectorToCsv[A <: Any](override val separator: Char, override implicit val encoding: Codec,
+                            override val header: Boolean)(implicit val c: ClassTag[A])
+  extends CsvBase[Vector[Vector[A]]](separator, encoding, header) {
 
   /**
    * Constructor with defaults
