@@ -12,10 +12,10 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cankoluman</groupId>
     <artifactId>ioCSV</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.5</version>
 
     <name>ioCSV</name>
-    <description>A simple CSV io Library in Scala</description>
+    <description>A simple CSV (comma separated values) io Library in Scala</description>
     <url>https://github.com/cankoluman/ioCSV</url>
 
     <licenses>
@@ -69,11 +69,25 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <!-- deployment -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <!-- site reports -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
                 <version>3.7.1</version>
             </plugin>
+            <!-- jar builder -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -84,6 +98,7 @@
                     </archive>
                 </configuration>
             </plugin>
+            <!-- sources builder -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -97,6 +112,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- scala workflows plugin -->
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
                 <artifactId>scala-maven-plugin</artifactId>
@@ -106,6 +122,7 @@
                         <phase>process-sources</phase>
                         <goals>
                             <goal>compile</goal>
+                            <goal>add-source</goal>
                             <goal>testCompile</goal>
                         </goals>
                     </execution>
@@ -117,7 +134,7 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <!-- signing -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -164,6 +181,7 @@
     </build>
     <reporting>
         <plugins>
+            <!-- site reports -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
