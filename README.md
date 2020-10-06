@@ -6,7 +6,7 @@ https://github.com/cankoluman/ioCSV
 
 Introduction:
 -
-This is a very lightweight csv exporter implementation.
+This is a very lightweight csv (comma separated values) exporter implementation.
 The to be exported data is wrapped in a `Frame[A]` structure, 
 which is passed to the `csvRead(source: String, gZip: Boolean): Frame[A]` 
 or `csvWrite(source: Frame[A], target: String, gZip: Boolean, append: Boolean): Unit` 
