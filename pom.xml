@@ -12,7 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cankoluman</groupId>
     <artifactId>ioCSV</artifactId>
-    <version>0.5</version>
+    <version>0.52-SNAPSHOT</version>
 
     <name>ioCSV</name>
     <description>A simple CSV (comma separated values) io Library in Scala</description>
@@ -80,7 +80,8 @@
             </plugins>
         </pluginManagement>
         <plugins>
-            <!-- deployment -->
+            <!-- release deployment -->
+            <!--
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -88,6 +89,19 @@
                 <extensions>true</extensions>
                 <configuration>
                     <serverId>ossrh-releases</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            -->
+            <!-- snapshot deployment -->
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh-snapshots</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
