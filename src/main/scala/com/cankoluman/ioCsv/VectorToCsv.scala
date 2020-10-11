@@ -50,12 +50,12 @@ class VectorToCsv[A <: Any](override val separator: Char, override implicit val 
 
     var line = hInput.readLine()
     if (line != null && header & !line.isEmpty) {
-      headers = Some(line.split(separator.toString).toVector)
+      headers = Some(line.split(separator.toString, -1).toVector)
       line = hInput.readLine()
     }
 
     while(line!= null && !line.isEmpty){
-      val row = line.split(separator.toString)
+      val row = line.split(separator.toString, -1)
       data += convert(row.toVector)
       line = hInput.readLine()
     }

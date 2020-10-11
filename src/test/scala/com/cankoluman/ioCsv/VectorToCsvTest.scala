@@ -85,11 +85,11 @@ class VectorToCsvTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterE
 
     val aEnc = default.encoding.charSet
     val eEnc = Codec(StandardCharsets.UTF_8)
-    assert(aEnc === eEnc.charSet, s"Incorrect Separator: actual $aEnc, expected $eEnc")
+    assert(aEnc === eEnc.charSet, s"Incorrect Codec: actual $aEnc, expected $eEnc")
 
     val aHdr = default.header
     val eHdr = true
-    assert(aHdr === eHdr, s"Incorrect Separator: actual $aHdr, expected $eHdr")
+    assert(aHdr === eHdr, s"Incorrect Header: actual $aHdr, expected $eHdr")
   }
 
   test("Custom constructor initializes as expected") {
@@ -99,11 +99,11 @@ class VectorToCsvTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterE
 
     val aEnc = custom.encoding.charSet
     val eEnc = Codec(StandardCharsets.ISO_8859_1)
-    assert(aEnc === eEnc.charSet, s"Incorrect Separator: actual $aEnc, expected $eEnc")
+    assert(aEnc === eEnc.charSet, s"Incorrect Codec: actual $aEnc, expected $eEnc")
 
     val aHdr = custom.header
     val eHdr = false
-    assert(aHdr === eHdr, s"Incorrect Separator: actual $aHdr, expected $eHdr")
+    assert(aHdr === eHdr, s"Incorrect Header: actual $aHdr, expected $eHdr")
   }
 
   test("Not transposed data without header is written / read to CSV file as expected") {
@@ -182,5 +182,33 @@ class VectorToCsvTest extends AnyFunSuite with MockitoSugar with BeforeAndAfterE
     )
 
     if (hFileGz.exists) hFileGz.delete()
+  }
+
+  test("Empty cell at end is read correctly"){
+    val csv = new VectorToCsv[String]()
+    val dExpected = Vector[Vector[String]](Vector("1", "2", "3", "4", "5", ""))
+    val hExpected = dExpected.indices.map(_.toString).toVector
+    val fExpected = Frame(Some(hExpected), dExpected)
+    csv.csvWrite(fExpected, file, gZip = false)
+
+    val fActual = csv.csvRead(file, gZip = false)
+    val hActual = fActual.header.get
+    val dActual = fActual.data
+
+    assert(hActual.length === hExpected.length, s"Header length is mismatched")
+    hExpected.indices.foreach(i => {
+      val a = hActual(i)
+      val e = hExpected(i)
+      assert(a === e, s"Error: Header mismatch at $i, actual $a, expected $e")
+    })
+
+    assert(dActual.length === 1, s"Error: expected 1 row, got ${dActual.length}")
+    assert(dActual.head.length === dExpected.head.length, s"Header length is mismatched")
+    dExpected.head.indices.foreach(i => {
+      val a = dActual.head(i)
+      val e = dExpected.head(i)
+      assert(a === e, s"Error: Data mismatch at $i, actual $a, expected $e")
+    })
+
   }
 }
