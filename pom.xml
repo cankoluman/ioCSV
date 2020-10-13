@@ -12,7 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cankoluman</groupId>
     <artifactId>ioCSV</artifactId>
-    <version>0.52-SNAPSHOT</version>
+    <version>0.52</version>
 
     <name>ioCSV</name>
     <description>A simple CSV (comma separated values) io Library in Scala</description>
@@ -81,7 +81,7 @@
         </pluginManagement>
         <plugins>
             <!-- release deployment -->
-            <!--
+
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -93,8 +93,9 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
-            -->
+
             <!-- snapshot deployment -->
+            <!--
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -106,6 +107,7 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
+            -->
             <!-- site reports -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
