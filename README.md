@@ -4,6 +4,10 @@
 **A simple CSV (comma separated values) io Library in Scala**
 https://github.com/cankoluman/ioCSV
 
+***Also available at***
+https://search.maven.org/artifact/com.cankoluman/ioCSV
+For Maven, Groovy DSL, Kotlin DSL, Scala SBT, Ivy, and others. 
+
 Introduction:
 -
 This is a very lightweight csv (comma separated values) exporter implementation.
