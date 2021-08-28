@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="scalatestplus.mockito.3.4_3" type="repository">
+    <properties maven-id="org.scalatestplus:mockito-3-4_3:3.2.9.0" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/scalatestplus/mockito-3-4_3/3.2.9.0/mockito-3-4_3-3.2.9.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala3-library_3/3.0.0/scala3-library_3-3.0.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.13.5/scala-library-2.13.5.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/mockito/mockito-core/3.4.6/mockito-core-3.4.6.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy/1.10.13/byte-buddy-1.10.13.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/net/bytebuddy/byte-buddy-agent/1.10.13/byte-buddy-agent-1.10.13.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/objenesis/objenesis/2.6/objenesis-2.6.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scalatest/scalatest-core_3/3.2.9/scalatest-core_3-3.2.9.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scalactic/scalactic_3/3.2.9/scalactic_3-3.2.9.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scalatest/scalatest-compatible/3.2.9/scalatest-compatible-3.2.9.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/modules/scala-xml_3/2.0.0/scala-xml_3-2.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

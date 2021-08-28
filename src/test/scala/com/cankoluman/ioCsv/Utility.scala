@@ -8,7 +8,7 @@
 package com.cankoluman.ioCsv.test
 
 import scala.annotation.tailrec
-import scala.reflect.io.{Directory, Path}
+import java.io.File
 
 /**
  * Created on 25/09/2020.
@@ -27,7 +27,7 @@ object Utility {
    * @return
    */
   def dirExists(path: String): Boolean = {
-    val candidate = Directory(path)
+    val candidate = new File(path)
     candidate.exists && candidate.isDirectory
   }
 
@@ -40,10 +40,11 @@ object Utility {
   def dirDeleteRecursive(path: String): Boolean = {
     if (!dirExists(path)) return false
 
-    val candidate = Directory(path)
+    val candidate = new File(path)
+    val parent = candidate.getParent
     candidate.delete()
 
-    val parent = Path(path).parent.toString()
+    if (parent == null) return false
     dirDeleteRecursive(parent)
   }
 

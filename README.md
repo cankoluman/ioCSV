@@ -1,4 +1,4 @@
-## ioCSV v 0.5 (release)
+## ioCSV v 0.6 (release)
 ###### Can Koluman, PhD Candidate, City, University of London, Department of Computer Science
 
 **A simple CSV (comma separated values) io Library in Scala**
@@ -28,10 +28,11 @@ Customizables:
 
 Dependencies:
 -
-- Scala 2.13.3
-- Scalatest 2.13:3.2.1 (e.g. Maven)
-- Scalatestplus:mockito 3-4_2.13:3.1.3.0 (Maven)
-- Mockito Core 3.5.7 (Maven)
+- Version 0.6 is Scala 3 compatible
+- Scala 3.0.1
+- Scalatest 3 3.2.9 (e.g. Maven)
+- Scalatestplus:mockito 3-4_3 3.2.9.0 (Maven)
+- Mockito Core 3.12.1 (Maven)
 
 TO DO:
 -
@@ -42,9 +43,9 @@ TO DO:
 
 
 ###### Copyright Notices
-- &copy; 2020 Copyright, Can Koluman. Apache 2.0 Licence for authored components.
+- &copy; 2021 Copyright, Can Koluman. Apache 2.0 Licence for authored components.
 
-_Copyright 2020 Can Koluman_
+_Copyright 2021 Can Koluman_
 
 _Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

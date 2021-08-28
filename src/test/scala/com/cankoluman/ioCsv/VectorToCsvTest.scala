@@ -13,7 +13,7 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.mockito.MockitoSugar
 import scala.io.Codec
-import scala.reflect.io.File
+import java.io.File
 
 /**
  * Created on 25/09/2020.

@@ -44,6 +44,8 @@ hs_err_pid*
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
 .idea/rGraphicsSettings.xml
+.idea/misc.xml
+.idea/scala_settings.xml
 
 
 /out/

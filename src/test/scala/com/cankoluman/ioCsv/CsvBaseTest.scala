@@ -12,6 +12,7 @@ import com.cankoluman.ioCsv.CsvBase
 import org.mockito.Mockito.{CALLS_REAL_METHODS, withSettings}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar.mock
 import scala.io.Codec
 
 /**
@@ -22,7 +23,7 @@ import scala.io.Codec
  *
  *
  */
-class CsvBaseTest extends AnyFunSuite with MockitoSugar {
+class CsvBaseTest extends AnyFunSuite {
 
   val mockCsvBase: CsvBase[Double] = mock[CsvBase[Double]](withSettings()
     .defaultAnswer(CALLS_REAL_METHODS)
