@@ -28,7 +28,7 @@ Customizables:
 
 Dependencies:
 -
-- Version 0.6 is Scala 3 compatible
+- From version 0.6, Scala 3 compatible
 - Scala 3.0.1
 - Scalatest 3 3.2.9 (e.g. Maven)
 - Scalatestplus:mockito 3-4_3 3.2.9.0 (Maven)
