@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.cankoluman</groupId>
     <artifactId>ioCSV</artifactId>
-    <version>0.60</version>
+    <version>0.62</version>
 
     <name>ioCSV</name>
     <description>A simple CSV (comma separated values) io Library in Scala</description>
@@ -153,19 +153,64 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- javadoc jar work-around for broken scala-maven-plugin
+            <!-- Exec scaladoc separately, expects Scaladoc 3.
+                Must be run after compile. We run it during packaging
+           -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>build-classpath</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>build-classpath</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>target/classes/dep-list</outputFile>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution><!-- Run our version calculation script -->
+                        <id>Scaladoc 3 Generation</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>sh</executable>
+                    <arguments>
+                        <argument>target/classes/scaladoc.sh</argument>
+                        <argument>${project.name}</argument>
+                        <argument>${project.version}</argument>
+                        <argument>Copyright © 2020. All rights reserved.</argument>
+                        <argument>${scm.url}</argument>
+                        <argument>/opt/scala3-3.0.1/bin</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+            <!-- use javadoc:jar for jar creation: work-around for broken scala-maven-plugin
                  4.5.3 with Java 11 (injects -doc-title arg, (and not -doctitle)
                  which breaks scala doc generation)?
+                 Also, we use Scaladoc 3 separately to generate Scaladocs
                  Run clean, site, package
              -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>3.3.0</version>
                 <configuration>
-                    <sourcepath>${basedir}/src/main/scala</sourcepath>
-                    <sourceFileIncludes>*.scala</sourceFileIncludes>
-                    <destDir>${basedir}/target/site/scaladocs</destDir>
+                    <outputDirectory>${basedir}/target/site/scaladocs</outputDirectory>
                 </configuration>
                 <executions>
                     <execution>
@@ -244,14 +289,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.1.1</version>
-            </plugin>
-            <plugin>
-                <groupId>net.alchim31.maven</groupId>
-                <artifactId>scala-maven-plugin</artifactId>
-                <version>4.4.0</version>
-                <configuration>
-                    <sourceDir>${basedir}/src/main/scala</sourceDir>
-                </configuration>
             </plugin>
         </plugins>
     </reporting>

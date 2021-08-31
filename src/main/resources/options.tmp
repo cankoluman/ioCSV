@@ -1,0 +1,14 @@
+-classpath
+"CLASS_PATH"
+-encoding
+"UTF-8"
+-private
+-d
+"target/site/scaladocs"
+-project
+"PROJECT_NAME"
+-project-version
+"PROJECT_VERSION"
+-project-footer
+"PROJECT_FOOTER"
+-social-links:github::SCM_LINK
