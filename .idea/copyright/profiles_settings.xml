@@ -1,7 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="Can Koluman">
+  <settings default="Apache 2.0 / Others">
     <module2copyright>
-      <element module="All" copyright="Can Koluman" />
+      <element module="All" copyright="Apache 2.0 / Others" />
     </module2copyright>
   </settings>
 </component>
