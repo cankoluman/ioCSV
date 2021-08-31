@@ -194,7 +194,7 @@
                         <argument>${project.name}</argument>
                         <argument>${project.version}</argument>
                         <argument>Copyright © 2020. All rights reserved.</argument>
-                        <argument>${scm.url}</argument>
+                        <argument>${project.scm.url}</argument>
                         <argument>/opt/scala3-3.0.1/bin</argument>
                     </arguments>
                 </configuration>
