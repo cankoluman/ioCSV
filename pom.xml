@@ -147,9 +147,6 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                         </manifest>
-                        <!--
-                            <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-                        -->
                     </archive>
                 </configuration>
             </plugin>
