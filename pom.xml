@@ -148,6 +148,9 @@
                             <addClasspath>true</addClasspath>
                         </manifest>
                     </archive>
+                    <excludes>
+                        <exclude>dep-list</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <!-- sources builder -->

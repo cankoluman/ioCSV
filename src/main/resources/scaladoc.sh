@@ -40,3 +40,8 @@ SCALADOC_ROOT="$(echo "${SCALADOC_ROOT}" | sed "s#\~#$HOME#")"
 CMD="$SCALADOC_ROOT/scala3-doc @target/classes/options @target/classes/files"
 echo "running $CMD ..."
 $CMD
+echo "removing artifacts ..."
+rm target/classes/options
+rm target/classes/files
+rm target/classes/dep-list
+echo "DONE."
