@@ -35,10 +35,13 @@ sed "s^CLASS_PATH^$(cat target/classes/dep-list)^g;s^PROJECT_NAME^$PROJECT_NAME^
 # enumerate docfiles
 mkdir -p target/site/scaladocs
 find target/classes -name "*.tasty" > target/classes/files
-CMD="$SCALADOC_ROOT/scaladoc @target/classes/options @target/classes/files"
+# SCALADOC_ROOT="${SCALADOC_ROOT#\~#HOME}"
+SCALADOC_ROOT="$(echo "${SCALADOC_ROOT}" | sed "s#\~#$HOME#")"
+CMD="$SCALADOC_ROOT/scala3-doc @target/classes/options @target/classes/files"
 echo "running $CMD ..."
 $CMD
-
-
-
-
+echo "removing artifacts ..."
+rm target/classes/options
+rm target/classes/files
+rm target/classes/dep-list
+echo "DONE."
