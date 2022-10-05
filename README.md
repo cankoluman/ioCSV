@@ -1,4 +1,4 @@
-# ioCSV v 0.65 (release)
+# ioCSV v 0.67 (release)
 
 ## Can Koluman, PhD Candidate, City, University of London, Department of Computer Science
 
@@ -11,7 +11,7 @@ For Maven, Groovy DSL, Kotlin DSL, Scala SBT, Ivy, and others.
 
 ### News
 
-Version 0.65 uses Scala 3.1.3. Also, the project now is
+Version 0.67 uses Scala 3.2.0. Also, the project now is
 IDE independent. Maven is sufficient to run it, even from a bash shell.
 
 ### Introduction
@@ -34,11 +34,11 @@ The implementation will grow slightly over time.
 
 ### Dependencies
 
-- Scala 3.1.3
-- Scala Library 3.1.3
-- Scalatest 3 3.2.12
-- Scalatestplus:mockito 4-5_3 3.2.12.0
-- Mockito Core 4.6.1
+- Scala
+- Scala Library
+- Scalatest 3
+- Scalatestplus:mockito 4-5_3
+- Mockito Core
 
 ### TO DO
 
@@ -48,9 +48,9 @@ The implementation will grow slightly over time.
 
 #### Copyright Notices
 
-&copy; 2021 Copyright, Can Koluman. Apache 2.0 Licence for authored components.
+&copy; 2022 Copyright, Can Koluman. Apache 2.0 Licence for authored components.
 
-&copy; Copyright 2021 Can Koluman
+&copy; Copyright 2022 Can Koluman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
